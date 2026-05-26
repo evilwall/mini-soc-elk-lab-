@@ -68,7 +68,8 @@ The work is limited to a small lab environment and focuses on a restricted set o
 This repository is intended for educational and lab use. Any deployment outside a controlled environment would require additional hardening, validation, and environment-specific adjustments. 
 
 ## Tools and commands
- nmap 192.168.25.166
+```
+nmap 192.168.25.166
 Starting Nmap 7.95 ( https://nmap.org ) at 2026-04-17 11:20 EDT
 Nmap scan report for 192.168.25.166
 Host is up (0.00015s latency).
@@ -79,4 +80,4 @@ PORT   STATE SERVICE
 MAC Address: 00:0C:29:AC:A2:80 (VMware)
 
 Nmap done: 1 IP address (1 host up) scanned in 6.77 seconds
-
+```
