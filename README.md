@@ -34,6 +34,10 @@ The project tested three types of attack activity in the lab:[1]
 ## Results
 
 The environment was able to collect, store, and visualize security events related to multiple attack types in the lab. Nmap scanning was identified through repeated network-related events over a short period, brute force behavior was observed through repeated failed login attempts, and web-based attack activity was detected through traffic analysis and a custom Elastic Security query rule.[1]
+<img width="2502" height="1132" alt="Pasted image 20260417133226" src="https://github.com/user-attachments/assets/237dafcb-6122-4d35-879f-fbd35fb6ea30" />
+<img width="745" height="1121" alt="Pasted image 20260417133627" src="https://github.com/user-attachments/assets/ab7cddb0-1769-4f56-90c4-3bed3dd738f7" />
+<img width="2202" height="861" alt="Pasted image 20260417174707" src="https://github.com/user-attachments/assets/744983d7-caca-4b8b-8234-eedec6a70e08" />
+<img width="2237" height="700" alt="Pasted image 20260417174827" src="https://github.com/user-attachments/assets/785b0d72-5678-435f-a3dc-2d54b5119a7c" />
 
 ## Discussion
 
