@@ -1,5 +1,3 @@
-# mini-soc-elk-lab-
-
 # Mini SOC with ELK Stack
 
 This project documents the implementation of a small Security Operations Center (SOC) lab built with the ELK Stack to monitor, analyze, and detect security events in a controlled environment.[1]
