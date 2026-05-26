@@ -46,20 +46,7 @@ The project shows that it is possible to build a smaller SOC environment with th
 
 ## Scope Limitations
 
-The work is limited to a small lab environment and focuses on a restricted set of tools and attack types. It does not cover full-scale production deployment, advanced attack chains, or a broader range of threats.[1]
-
-## Repository Contents
-
-Suggested repository structure for this project:[1]
-
-```text
-.
-├── README.md
-├── docs/
-│   └── examen_arbete_bygg_mini_soc.pdf
-├── scripts/
-│   └── installelk.sh
-```
+The work is limited to a small lab environment and focuses on a restricted set of tools and attack types. It does not cover full-scale production deployment, advanced attack chains, or a broader range of threats.
 
 ## Notes
 
