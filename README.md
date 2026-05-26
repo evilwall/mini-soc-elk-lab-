@@ -1,53 +1,49 @@
 # Mini SOC with ELK Stack
 
-This project documents the implementation of a small Security Operations Center (SOC) lab built with the ELK Stack to monitor, analyze, and detect security events in a controlled environment.[1]
+This project documents the implementation of a small Security Operations Center (SOC) lab built with the ELK Stack to monitor, analyze, and detect security events in a controlled environment. 
 
 ## Overview
 
-The project investigates how a smaller SOC environment based on Elasticsearch, Logstash, and Kibana can be used to detect and analyze common attack activity in a lab setting. The implementation also uses Fleet Server and Elastic Agent to centrally manage endpoints and collect logs from the environment.[1]
+The project investigates how a smaller SOC environment based on Elasticsearch, Logstash, and Kibana can be used to detect and analyze common attack activity in a lab setting. The implementation also uses Fleet Server and Elastic Agent to centrally manage endpoints and collect logs from the environment. 
 
 ## Purpose
 
-The purpose of the project was to examine how well a mini SOC built on the ELK Stack could detect Nmap scans, brute force attacks, and web-based attacks in a lab environment.[1]
+The purpose of the project was to examine how well a mini SOC built on the ELK Stack could detect Nmap scans, brute force attacks, and web-based attacks in a lab environment. 
 
 ## Lab Environment
 
-The lab environment consisted of an attacker machine, an ELK server running Ubuntu Server 24.04, and Linux and Windows victim machines. Elasticsearch, Kibana, Logstash, Fleet Server, and Elastic Agent were installed and configured to collect, centralize, and visualize security-related events.[1] <img width="1133" height="417" alt="Pasted image 20260421152433" src="https://github.com/user-attachments/assets/4c8b20fe-853a-46e4-bf5e-6e633dbab601" />
+The lab environment consisted of an attacker machine, an ELK server running Ubuntu Server 24.04, and Linux and Windows victim machines. Elasticsearch, Kibana, Logstash, Fleet Server, and Elastic Agent were installed and configured to collect, centralize, and visualize security-related events.  <img width="1133" height="417" alt="Pasted image 20260421152433" src="https://github.com/user-attachments/assets/4c8b20fe-853a-46e4-bf5e-6e633dbab601" />
 
 
 ## Tools and Components
 
-- Elasticsearch for storing and searching log data.[1]
-- Logstash for handling and processing data flows.[1]
-- Kibana for visualization and analysis in a graphical interface.[1]
-- Fleet Server and Elastic Agent for centralized endpoint management and log collection.[1]
-- System integration and Elastic Defend for endpoint telemetry and security monitoring.[1]
+- Elasticsearch for storing and searching log data. 
+- Logstash for handling and processing data flows. 
+- Kibana for visualization and analysis in a graphical interface. 
+- Fleet Server and Elastic Agent for centralized endpoint management and log collection. 
+- System integration and Elastic Defend for endpoint telemetry and security monitoring. 
 
 ## Attack Scenarios
 
-The project tested three types of attack activity in the lab:[1]
+The project tested three types of attack activity in the lab: 
 
-- Nmap scanning.[1]
-- RDP brute force attempts.[1]
-- Web-based attacks using SQL injection techniques.[1]
+- Nmap scanning. 
+- RDP brute force attempts. 
+- Web-based attacks using SQL injection techniques. 
 
 ## Results
 
-The environment was able to collect, store, and visualize security events related to multiple attack types in the lab. Nmap scanning was identified through repeated network-related events over a short period, brute force behavior was observed through repeated failed login attempts, and web-based attack activity was detected through traffic analysis and a custom Elastic Security query rule.[1]
-<img width="2502" height="1132" alt="Pasted image 20260417133226" src="https://github.com/user-attachments/assets/237dafcb-6122-4d35-879f-fbd35fb6ea30" />
-<img width="745" height="1121" alt="Pasted image 20260417133627" src="https://github.com/user-attachments/assets/ab7cddb0-1769-4f56-90c4-3bed3dd738f7" />
-<img width="2202" height="861" alt="Pasted image 20260417174707" src="https://github.com/user-attachments/assets/744983d7-caca-4b8b-8234-eedec6a70e08" />
-<img width="2237" height="700" alt="Pasted image 20260417174827" src="https://github.com/user-attachments/assets/785b0d72-5678-435f-a3dc-2d54b5119a7c" />
+The environment was able to collect, store, and visualize security events related to multiple attack types in the lab. Nmap scanning was identified through repeated network-related events over a short period, brute force behavior was observed through repeated failed login attempts, and web-based attack activity was detected through traffic analysis and a custom Elastic Security query rule. 
 
 ## Discussion
 
-The results indicate that the configured mini SOC can serve as a practical foundation for simpler security monitoring and analysis. At the same time, detection capability depends heavily on correct installation, relevant data sources, and well-configured rules and integrations.[1]
+The results indicate that the configured mini SOC can serve as a practical foundation for simpler security monitoring and analysis. At the same time, detection capability depends heavily on correct installation, relevant data sources, and well-configured rules and integrations. 
 
-A key strength of the solution is centralized log management and visualization in Kibana, which supports analysis of network events and authentication attempts. A limitation is that the project was performed in a small lab environment and only covered a limited number of attack types, so the results cannot be directly generalized to larger production environments.[1]
+A key strength of the solution is centralized log management and visualization in Kibana, which supports analysis of network events and authentication attempts. A limitation is that the project was performed in a small lab environment and only covered a limited number of attack types, so the results cannot be directly generalized to larger production environments. 
 
 ## Conclusion
 
-The project shows that it is possible to build a smaller SOC environment with the ELK Stack and use it to monitor and analyze security events in a lab setting. The work demonstrates that a mini SOC can be a useful educational and practical approach for understanding basic security monitoring and incident handling.[1]
+The project shows that it is possible to build a smaller SOC environment with the ELK Stack and use it to monitor and analyze security events in a lab setting. The work demonstrates that a mini SOC can be a useful educational and practical approach for understanding basic security monitoring and incident handling. 
 
 ## Scope Limitations
 
@@ -55,5 +51,5 @@ The work is limited to a small lab environment and focuses on a restricted set o
 
 ## Notes
 
-This repository is intended for educational and lab use. Any deployment outside a controlled environment would require additional hardening, validation, and environment-specific adjustments.[1]
+This repository is intended for educational and lab use. Any deployment outside a controlled environment would require additional hardening, validation, and environment-specific adjustments. 
 
