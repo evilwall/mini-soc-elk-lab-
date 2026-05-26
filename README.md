@@ -35,6 +35,20 @@ The project tested three types of attack activity in the lab:
 
 The environment was able to collect, store, and visualize security events related to multiple attack types in the lab. Nmap scanning was identified through repeated network-related events over a short period, brute force behavior was observed through repeated failed login attempts, and web-based attack activity was detected through traffic analysis and a custom Elastic Security query rule. 
 
+### Nmap scanning
+The environment was able to identify Nmap scanning through repeated network-related events over a short period.
+<img width="2502" height="1132" alt="Pasted image 20260417133226" src="https://github.com/user-attachments/assets/624ae3bf-8722-4e3c-8db8-1a9cee3d32dc" />
+
+### Brute force detection
+Brute force behavior was observed through repeated failed login attempts in the collected logs.
+<img width="2202" height="861" alt="Pasted image 20260417174707" src="https://github.com/user-attachments/assets/82418fc4-5c17-47e3-b4c2-e49c1aa65004" />
+
+### Web-based attack detection
+Web-based attack activity was detected through traffic analysis and a custom Elastic Security query rule.
+<img width="2207" height="600" alt="Pasted image 20260417174440" src="https://github.com/user-attachments/assets/6b4b8519-233d-42ad-a8fa-61ba1999448f" />
+
+
+
 ## Discussion
 
 The results indicate that the configured mini SOC can serve as a practical foundation for simpler security monitoring and analysis. At the same time, detection capability depends heavily on correct installation, relevant data sources, and well-configured rules and integrations. 
