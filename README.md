@@ -67,5 +67,3 @@ Suggested repository structure for this project:[1]
 
 This repository is intended for educational and lab use. Any deployment outside a controlled environment would require additional hardening, validation, and environment-specific adjustments.[1]
 
-Källor
-[1] examen_arbete_bygg_mini_soc.pdf https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/20880184/4e877fcb-878a-499a-9b32-bb071596d8c3/examen_arbete_bygg_mini_soc.pdf
