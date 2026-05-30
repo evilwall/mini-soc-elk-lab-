@@ -88,13 +88,10 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 
 
 
-Here is a concise installation guide in English, in Markdown format, based on your lab and script.
-
-You can paste this directly into your README and adjust any wording you want.
 
 ---
 
-# Mini SOC with ELK Stack on Ubuntu 24.04
+# Mini SOC installationguide for Linux
 
 This guide describes how to install and configure a small SOC environment using the Elastic Stack (Elasticsearch, Logstash, Kibana) together with Fleet Server and Elastic Agent on Ubuntu Server 24.04.[[linuxtechi](https://www.linuxtechi.com/how-to-install-elk-stack-on-ubuntu/)]
 
