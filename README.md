@@ -86,6 +86,7 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 ```
 ___
 
+
 # Mini SOC ELK Install Script (Ubuntu 24.04)
 
 This guide explains how to use the provided Bash script to automatically install and configure a mini SOC based on the Elastic Stack (Elasticsearch, Kibana, Logstash, Fleet Server, and Elastic Agent) on Ubuntu Server 24.04.  
