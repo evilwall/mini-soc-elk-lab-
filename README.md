@@ -85,7 +85,7 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 
 ```
 ___
-
+#
 
 # Mini SOC ELK Install Script (Ubuntu 24.04)
 
