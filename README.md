@@ -85,322 +85,302 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 
 ```
 
+# Mini SOC with ELK Stack on Ubuntu 24.04
 
+This guide describes how to install and configure a small SOC environment using the Elastic Stack (Elasticsearch, Logstash, Kibana) together with Fleet Server and Elastic Agent on Ubuntu Server 24.04.  
 
-
+> Lab use only. Do not use real credentials, tokens, or production data in this environment.
 
 ---
 
-# Mini SOC installationguide for Linux
-
-This guide describes how to install and configure a small SOC environment using the Elastic Stack (Elasticsearch, Logstash, Kibana) together with Fleet Server and Elastic Agent on Ubuntu Server 24.04.[[linuxtechi](https://www.linuxtechi.com/how-to-install-elk-stack-on-ubuntu/)]
-
 ## 1. Prerequisites
 
-- Ubuntu Server 24.04 (fresh or up-to-date)
-    
-- Root access or a user with `sudo` privileges
-    
-- Internet access to reach Elastic package repositories[[itnixpro](https://itnixpro.com/install-elk-stack-8-on-ubuntu/)]
-    
-    > Lab use only. Do not use real credentials, tokens, or production data in this environment.
-    
+- Ubuntu Server 24.04 (fresh or up to date)  
+- Root or `sudo` access  
+- Internet access to reach Elastic package repositories  
 
-## 2. Update the system and install dependencies
+---
 
-bash
+## 2. System update and dependencies
 
-`sudo apt update && sudo apt upgrade -y sudo apt install -y gnupg2 apt-transport-https curl wget`
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y gnupg2 apt-transport-https curl wget
+```
+
+---
 
 ## 3. Add Elastic 8.x APT repository
 
-1. Import the Elastic GPG key:
-    
-    bash
-    
-    `wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch \   | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg`
-    
-2. Add the Elastic repository:
-    
-    bash
-    
-    `cat <<EOF | sudo tee /etc/apt/sources.list.d/elastic-8.x.list deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main EOF`
-    
-3. Update package lists:
-    
-    bash
-    
-    `sudo apt update`
-    
-    Elastic 8.x packages are now available via APT.[[ultahost](https://ultahost.com/knowledge-base/install-elk-stack-ubuntu/)]
-    
+Import the Elastic GPG key:
 
-## 4. Install Elasticsearch
+```bash
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch \
+  | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+```
 
-bash
+Add the Elastic repository:
 
-`sudo apt install -y elasticsearch`
+```bash
+cat <<EOF | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main
+EOF
+```
 
-Enable and start the service:
+Update package lists:
 
-bash
+```bash
+sudo apt update
+```
 
-`sudo systemctl daemon-reload sudo systemctl enable elasticsearch sudo systemctl start elasticsearch`
+---
 
-Wait about 30 seconds, then verify:
+## 4. Install and configure Elasticsearch (single node)
 
-bash
+Install:
 
-`curl -k https://localhost:9200`
+```bash
+sudo apt install -y elasticsearch
+```
 
-If the service responds with basic cluster info, Elasticsearch is running.[[linuxcapable](https://linuxcapable.com/how-to-install-elasticsearch-8-on-ubuntu-linux/)]
+Backup and edit config:
 
-> During the first install, Elasticsearch may generate a password and security credentials. Store any generated passwords securely and never commit them to Git or share them publicly.
+```bash
+sudo cp /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.bak
+sudo nano /etc/elasticsearch/elasticsearch.yml
+```
 
-## 5. Configure Elasticsearch (single-node lab)
+Add or ensure these lines exist:
 
-Backup the default config:
+```yaml
+discovery.type: single-node
+network.host: 0.0.0.0
+#cluster.initial_master_nodes:
+```
 
-bash
+Enable and start:
 
-`sudo cp /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.bak`
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch
+sudo systemctl start elasticsearch
+```
 
-Edit `/etc/elasticsearch/elasticsearch.yml` and ensure at least:
+Test after ~30 seconds:
 
-text
+```bash
+curl -k https://localhost:9200
+```
 
-`discovery.type: single-node network.host: 0.0.0.0 #cluster.initial_master_nodes:`
+> During installation, Elasticsearch may generate a password for the `elastic` user. Store it securely and never commit it to Git.
 
-- `discovery.type: single-node` allows a simple, single-node lab deployment.[[itnixpro](https://itnixpro.com/install-elk-stack-8-on-ubuntu/)]
-    
-- `network.host: 0.0.0.0` makes the service listen on all interfaces (lab use only; for production, restrict this).
-    
+---
 
-Restart Elasticsearch for changes to take effect:
+## 5. Install and configure Kibana
 
-bash
+Install:
 
-`sudo systemctl restart elasticsearch`
+```bash
+sudo apt install -y kibana
+```
 
-## 6. Install Kibana
+Backup and edit config:
 
-bash
-
-`sudo apt install -y kibana`
-
-Backup and configure:
-
-bash
-
-`sudo cp /etc/kibana/kibana.yml /etc/kibana/kibana.yml.bak`
+```bash
+sudo cp /etc/kibana/kibana.yml /etc/kibana/kibana.yml.bak
+sudo nano /etc/kibana/kibana.yml
+```
 
 Ensure at least:
 
-text
+```yaml
+server.host: "0.0.0.0"
+server.port: 5601
+```
 
-`server.host: "0.0.0.0" server.port: 5601`
+Generate encryption keys and append to `kibana.yml`:
 
-Generate and add Kibana encryption keys (for saved objects, alerts, etc.):[[linuxtechi](https://www.linuxtechi.com/how-to-install-elk-stack-on-ubuntu/)]
+```bash
+sudo /usr/share/kibana/bin/kibana-encryption-keys generate -q \
+  | sudo tee -a /etc/kibana/kibana.yml
+```
 
-bash
+Enable and start:
 
-`sudo /usr/share/kibana/bin/kibana-encryption-keys generate -q | sudo tee -a /etc/kibana/kibana.yml`
+```bash
+sudo systemctl enable kibana
+sudo systemctl start kibana
+```
 
-Enable and start Kibana:
+Check status:
 
-bash
+```bash
+curl http://localhost:5601/status
+```
 
-`sudo systemctl enable kibana sudo systemctl start kibana`
+Open in browser:
 
-After ~60 seconds, check:
+```text
+http://<SERVER_IP>:5601
+```
 
-bash
+---
 
-`curl http://localhost:5601/status`
+## 6. Reset `elastic` password and create Kibana enrollment token
 
-On a remote machine, open:
+Reset `elastic` if needed:
 
-text
+```bash
+sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+```
 
-`http://<SERVER_IP>:5601`
+Create Kibana enrollment token:
 
-Use the `elastic` user and the password you reset in the next step.
-
-## 7. Reset elastic password and create Kibana enrollment token
-
-Reset the `elastic` user password (if needed):
-
-bash
-
-`sudo /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic`
-
-Create a Kibana enrollment token:
-
-bash
-
-`sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana`
+```bash
+sudo /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+```
 
 Then:
 
-1. Open `http://<SERVER_IP>:5601` in a browser.
-    
-2. Paste the Kibana enrollment token.
-    
+1. Open `http://<SERVER_IP>:5601`
+2. Paste the enrollment token
 3. Log in with:
-    
-    - Username: `elastic`
-        
-    - Password: (from the reset command above)[[itnixpro](https://itnixpro.com/install-elk-stack-8-on-ubuntu/)]
-        
+   - Username: `elastic`
+   - Password: (from the reset command)
 
-## 8. Install Logstash (optional for this lab)
+---
 
-If you want Logstash for additional pipelines:
+## 7. Install Logstash (optional)
 
-bash
+```bash
+sudo apt install -y logstash
+sudo systemctl enable logstash
+sudo systemctl start logstash
+```
 
-`sudo apt install -y logstash sudo systemctl enable logstash sudo systemctl start logstash`
+---
 
-Logstash can later be used for custom ingestion and transformation before data is sent to Elasticsearch.[[linuxtechi](https://www.linuxtechi.com/how-to-install-elk-stack-on-ubuntu/)]
+## 8. Set up Fleet Server in Kibana
 
-## 9. Set up Fleet Server in Kibana
+1. In Kibana, go to **Management → Fleet**  
+2. Click **Add Fleet Server → Quick start**  
+3. Copy the generated `elastic-agent install` command (similar to):
 
-To centrally manage Elastic Agents, configure Fleet and Fleet Server in Kibana:[[elastic](https://www.elastic.co/guide/en/fleet/8.3/add-a-fleet-server.html)]
+   ```bash
+   sudo elastic-agent install \
+     --url=https://<SERVER_IP>:8220 \
+     --enrollment-token=<ENROLLMENT_TOKEN> \
+     --fleet-server-es=https://localhost:9200 \
+     --fleet-server-service-token=<SERVICE_TOKEN> \
+     --fleet-server-policy=fleet-server-policy
+   ```
 
-1. In Kibana, go to:
-    
-    - `Management` → `Fleet`.
-        
-2. Click **Add Fleet Server**, then choose **Quick start**.
-    
-3. Kibana will display a pre-built `elastic-agent install` command similar to:
-    
-    bash
-    
-    `sudo elastic-agent install \   --url=https://<SERVER_IP>:8220 \  --enrollment-token=<ENROLLMENT_TOKEN> \  --fleet-server-es=https://localhost:9200 \  --fleet-server-service-token=<SERVICE_TOKEN> \  --fleet-server-policy=fleet-server-policy`
-    
-4. Run this command on the ELK server to install Elastic Agent and Fleet Server there.
-    
-5. Once finished, Fleet Server should appear as an agent in the Fleet UI.
-    
+4. Run that command on the ELK server
 
-## 10. Create an Agent Policy and add integrations
+---
 
-1. In Kibana, go to:
-    
-    - `Management` → `Fleet` → `Agent policies`.
-        
-2. Click **Create agent policy** and name it something like `SOC-Endpoints`.
-    
-3. Add integrations to the policy:
-    
-    - **System** (logs and metrics)
-        
-    - **Elastic Defend** (endpoint protection and telemetry)[[elastic](https://www.elastic.co/docs/reference/fleet/add-fleet-server-on-prem)]
-        
+## 9. Create agent policy and add integrations
 
-This policy will be used by your lab endpoints.
+1. **Management → Fleet → Agent policies → Create agent policy**  
+2. Name it e.g. `SOC-Endpoints`  
+3. Add integrations:
+   - `System` (logs and metrics)
+   - `Elastic Defend` (endpoint security)
 
-## 11. Enroll endpoints with Elastic Agent
+---
 
-For each lab endpoint (Kali, Linux, Windows):
+## 10. Enroll lab endpoints
 
-1. In Kibana, go to:
-    
-    - `Management` → `Fleet` → `Agents` → **Add agent**.
-        
-2. Select the `SOC-Endpoints` agent policy.
-    
-3. Choose the correct OS tab (Linux or Windows) and copy the installation command.
-    
+For each endpoint (Kali, Linux, Windows):
 
-Example for Linux:[[discuss.elastic](https://discuss.elastic.co/t/need-help-with-elastic-agent-installation/338570)]
+1. Go to **Management → Fleet → Agents → Add agent**  
+2. Select `SOC-Endpoints` policy  
+3. Copy the install command for the target OS  
 
-bash
+Example Linux:
 
-`sudo ./elastic-agent install \   --url=https://<FLEET_SERVER_IP>:8220 \  --enrollment-token=<ENROLLMENT_TOKEN>`
+```bash
+sudo ./elastic-agent install \
+  --url=https://<FLEET_SERVER_IP>:8220 \
+  --enrollment-token=<ENROLLMENT_TOKEN>
+```
 
-Example for Windows MSI:[[elastic](https://www.elastic.co/guide/en/fleet/8.14/install-agent-msi.html)]
+Example Windows (MSI):
 
-powershell
+```powershell
+elastic-agent-<VERSION>-windows-x86_64.msi `
+  INSTALLARGS="--url=https://<FLEET_SERVER_IP>:8220 --enrollment-token=<ENROLLMENT_TOKEN>"
+```
 
-``elastic-agent-<VERSION>-windows-x86_64.msi `   INSTALLARGS="--url=https://<FLEET_SERVER_IP>:8220 --enrollment-token=<ENROLLMENT_TOKEN>"``
+Verify in Kibana:
 
-After installation, check in Kibana:
+- `Security → Hosts`
+- `Security → Alerts`
 
-- `Security` → `Hosts` to see enrolled endpoints.
-    
-- `Security` → `Alerts` to see detection alerts from Elastic Defend.
-    
+---
 
-## 12. Open firewall ports (if UFW is enabled)
+## 11. Open firewall ports (if UFW is enabled)
 
-If `ufw` is active on the ELK server, open the standard ports:[[linuxcapable](https://linuxcapable.com/how-to-install-elasticsearch-8-on-ubuntu-linux/)]
+```bash
+sudo ufw allow 9200/tcp    # Elasticsearch
+sudo ufw allow 5601/tcp    # Kibana
+sudo ufw allow 8220/tcp    # Fleet Server
+sudo ufw reload
+```
 
-bash
+---
 
-`sudo ufw allow 9200/tcp    # Elasticsearch sudo ufw allow 5601/tcp    # Kibana sudo ufw allow 8220/tcp    # Fleet Server sudo ufw reload`
+## 12. Troubleshooting
 
-## 13. Basic troubleshooting
+Elasticsearch logs:
 
-Useful commands if something is not working:
+```bash
+sudo journalctl -u elasticsearch -f
+```
 
-- Elasticsearch logs:
-    
-    bash
-    
-    `sudo journalctl -u elasticsearch -f`
-    
-- Kibana logs:
-    
-    bash
-    
-    `sudo journalctl -u kibana -f`
-    
-- Test Elasticsearch:
-    
-    bash
-    
-    `curl -k -u elastic:<PASSWORD> https://localhost:9200`
-    
-- Test Kibana:
-    
-    
-    ```bash
-    curl http://localhost:5601/status
-    ```
-    
+Kibana logs:
 
-Check configuration files if services fail to start:
+```bash
+sudo journalctl -u kibana -f
+```
+
+Test Elasticsearch:
+
+```bash
+curl -k -u elastic:<PASSWORD> https://localhost:9200
+```
+
+Test Kibana:
+
+```bash
+curl http://localhost:5601/status
+```
+
+Config files:
 
 - `/etc/elasticsearch/elasticsearch.yml`
-    
 - `/etc/kibana/kibana.yml`
-    
 
-## 14. Lab attack commands (examples)
+---
 
-These are the main tools and commands used in the lab to generate security events.
+## 13. Lab attack commands
 
-## Nmap scan
+### Nmap
 
 ```bash
 nmap <target-ip>
 ```
 
-## SQL injection with sqlmap
+### SQL injection with sqlmap
 
 ```bash
 sqlmap -u "http://<target-ip>/api/products/1*"
 ```
 
-## RDP brute force with hydra
+### RDP brute force with hydra
 
 ```bash
 hydra -L username.txt -P passwords.txt -vV rdp://<target-ip>
 ```
 
-
-> Use these commands only in a controlled lab against systems you own or are authorized to test.
-
----
+> Only use these against systems you own or are explicitly allowed to test.
