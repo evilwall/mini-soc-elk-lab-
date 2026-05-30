@@ -84,7 +84,7 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 └─# hydra -L username.txt -P passwords.txt -vV rdp://{ipaddress}
 
 ```
-
+___
 
 # Mini SOC ELK Install Script (Ubuntu 24.04)
 
