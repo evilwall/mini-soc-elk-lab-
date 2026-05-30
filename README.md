@@ -99,7 +99,7 @@ This guide explains how to use the provided Bash script to automatically install
 
 ## 1. Requirements
 
-- Ubuntu Server 24.04
+- Ubuntu Server live-server
 - Root access or a user with `sudo` privileges
 - Internet access to reach Elastic package repositories  
 - The installation script saved on the server (for example as `install_elk.sh`)
