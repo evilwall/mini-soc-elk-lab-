@@ -84,6 +84,8 @@ sqlmap -u "http://{ipaddress}/api/products/1*"
 └─# hydra -L username.txt -P passwords.txt -vV rdp://{ipaddress}
 
 ```
+
+
 # Mini SOC ELK Install Script (Ubuntu 24.04)
 
 This guide explains how to use the provided Bash script to automatically install and configure a mini SOC based on the Elastic Stack (Elasticsearch, Kibana, Logstash, Fleet Server, and Elastic Agent) on Ubuntu Server 24.04.  
@@ -97,12 +99,12 @@ This guide explains how to use the provided Bash script to automatically install
 - Ubuntu Server 24.04
 - Root access or a user with `sudo` privileges
 - Internet access to reach Elastic package repositories  
-- The installation script saved on the server (for example as `install-elk-soc.sh`)
+- The installation script saved on the server (for example as `install_elk.sh`)
 
 Make the script executable:
 
 ```bash
-chmod +x install-elk-soc.sh
+chmod +x install_elk.sh
 ```
 
 ---
@@ -112,7 +114,7 @@ chmod +x install-elk-soc.sh
 Run the script as root (or with sudo):
 
 ```bash
-sudo ./install-elk-soc.sh
+sudo ./install_elk.sh
 ```
 
 The script will:
